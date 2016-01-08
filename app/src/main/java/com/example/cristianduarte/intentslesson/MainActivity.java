@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -33,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mPerson.setAge(25);
         Intent mIntent = new Intent(this,DetailSerializableActivity.class);
         Bundle mBundle = new Bundle();
-        mBundle.putSerializable(SER_KEY,mPerson);
+        mBundle.putSerializable(SER_KEY, mPerson);
         mIntent.putExtras(mBundle);
 
         startActivity(mIntent);
@@ -80,5 +81,41 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private static final int REQUEST_NEW_NUMBER = 1243;
+    private static final int REQUEST_NEW_COLOR = 1244;
+
+    public void askNumber(View v) {
+        Intent askNumberIntent = new Intent(this, NumberGeneratorActivity.class);
+        startActivityForResult(askNumberIntent, REQUEST_NEW_NUMBER);
+    }
+
+    public void askColor(View v) {
+        Intent askNumberIntent = new Intent(this, NumberGeneratorActivity.class);
+        startActivityForResult(askNumberIntent, REQUEST_NEW_COLOR);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case REQUEST_NEW_NUMBER:
+                    int n = data.getIntExtra("number", 0);
+                    Toast.makeText(this, "Valor elegido: " + n, Toast.LENGTH_LONG).show();
+                    break;
+                case REQUEST_NEW_COLOR:
+                    int color = data.getIntExtra("color", 0xFFFFFF);
+                    findViewById(R.id.content_layout).setBackgroundColor(color);
+                    break;
+                default:
+                    break;
+            }
+        } else if (resultCode == RESULT_CANCELED) {
+            Toast.makeText(this, "Usuario canceló", Toast.LENGTH_LONG).show();
+        } else {
+
+        }
     }
 }
