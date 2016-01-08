@@ -18,6 +18,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".DetailParcelableActivity"
+            android:label="Detalle2">
+        </activity>
+        <activity android:name=".DetailSerializableActivity"
+            android:label="DetalleSer">
+        </activity>
     </application>
 
 </manifest>
