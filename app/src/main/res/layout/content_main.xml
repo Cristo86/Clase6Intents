@@ -46,4 +46,8 @@
         android:text="Pedir Foto"
         android:onClick="askPhoto"
         />
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="100dp"
+        android:layout_height="100dp" />
 </LinearLayout>

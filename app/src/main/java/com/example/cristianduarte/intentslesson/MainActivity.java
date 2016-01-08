@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -143,8 +144,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 case REQUEST_IMAGE_CAPTURE:
                     Bundle extras = data.getExtras();
                     Bitmap imageBitmap = (Bitmap) extras.get("data");
-                    setBackground(findViewById(R.id.content_layout),
-                            new BitmapDrawable(getResources(), imageBitmap));
+                    ((ImageView) findViewById(R.id.imageView)).setImageBitmap(imageBitmap);
+                    /*setBackground(findViewById(R.id.content_layout),
+                            new BitmapDrawable(getResources(), imageBitmap));*/
                 default:
                     break;
             }
