@@ -1,7 +1,13 @@
 package com.example.cristianduarte.intentslesson;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Menu;
@@ -85,6 +91,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private static final int REQUEST_NEW_NUMBER = 1243;
     private static final int REQUEST_NEW_COLOR = 1244;
+    private static final int REQUEST_IMAGE_CAPTURE = 1245;
 
     public void askNumber(View v) {
         Intent askNumberIntent = new Intent(this, NumberGeneratorActivity.class);
@@ -94,6 +101,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void askColor(View v) {
         Intent askNumberIntent = new Intent(this, NumberGeneratorActivity.class);
         startActivityForResult(askNumberIntent, REQUEST_NEW_COLOR);
+    }
+
+    public void askPhoto(View v) {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
+        }
+    }
+
+
+    private void setBackground(View v, Drawable d) {
+        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.JELLY_BEAN) {
+            setBackgroundJellyBean(v,d);
+        } else {
+            setBackgroundPreJellyBean(v,d);
+        }
+    }
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    private void setBackgroundJellyBean(View v, Drawable d) {
+        v.setBackground(d);
+    }
+
+    private void setBackgroundPreJellyBean(View v, Drawable d) {
+        v.setBackgroundDrawable(d);
     }
 
     @Override
@@ -109,6 +140,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     int color = data.getIntExtra("color", 0xFFFFFF);
                     findViewById(R.id.content_layout).setBackgroundColor(color);
                     break;
+                case REQUEST_IMAGE_CAPTURE:
+                    Bundle extras = data.getExtras();
+                    Bitmap imageBitmap = (Bitmap) extras.get("data");
+                    setBackground(findViewById(R.id.content_layout),
+                            new BitmapDrawable(getResources(), imageBitmap));
                 default:
                     break;
             }

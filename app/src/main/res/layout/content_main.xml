@@ -39,4 +39,11 @@
         android:text="Pedir Color"
         android:onClick="askColor"
         />
+    <Button
+        android:id="@+id/buttonAskPhoto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Pedir Foto"
+        android:onClick="askPhoto"
+        />
 </LinearLayout>
