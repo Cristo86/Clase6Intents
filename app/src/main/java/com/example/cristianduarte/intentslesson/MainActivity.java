@@ -19,15 +19,6 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
         // Crear un mensaje de texto con un string
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
@@ -38,6 +29,34 @@ public class MainActivity extends AppCompatActivity {
         if (sendIntent.resolveActivity(getPackageManager()) != null) {
             startActivity(sendIntent);
         }
+
+        // "Main Activity"
+        // Nueva instancia de intent
+        Intent detailsIntent = new Intent(this, DetailActivity.class);
+        // Agregamos un array de float   .putExtra(String, float[]);
+        detailsIntent.putExtra(
+                "COORDINATES",
+                new float[]{30.4f, -19.5f, -45.6f, 55.0f});
+        // Enviamos un boolean
+        detailsIntent.putExtra("ACCURATE", true);
+        // Iniciar activity
+        startActivity(detailsIntent);
+
+        // ...
+
+        // "DetailActivity"
+        Intent intent = getIntent();
+        // Obtenemos el array de 'COORDINATES'
+        float[] coordinates = intent.getFloatArrayExtra("COORDINATES");
+        // ..y si era precisa, el boolean
+        boolean accurate = intent.getBooleanExtra(
+                "ACCURATE",
+                false /* Valor por defecto*/);
+
+
+
+        int ep = coordinates.length;
+        boolean oth = accurate;
 
     }
 
