@@ -16,6 +16,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import java.io.IOException;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Button sButton,pButton;
@@ -142,8 +144,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     findViewById(R.id.content_layout).setBackgroundColor(color);
                     break;
                 case REQUEST_IMAGE_CAPTURE:
-                    Bundle extras = data.getExtras();
-                    Bitmap imageBitmap = (Bitmap) extras.get("data");
+                    Bitmap imageBitmap = null;
+                    if(data.getData()==null){
+                        imageBitmap = (Bitmap)data.getExtras().get("data");
+                    }else{
+                        try {
+                            imageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), data.getData());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
                     ((ImageView) findViewById(R.id.imageView)).setImageBitmap(imageBitmap);
                     /*setBackground(findViewById(R.id.content_layout),
                             new BitmapDrawable(getResources(), imageBitmap));*/
